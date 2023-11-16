@@ -49,4 +49,5 @@ Background();
 Cloud(100, 100, 50);
 Cloud(400, 200, 70);
 Cloud(600, 150, 60);
+Cloud(700, 150, 60);
 Highway();
