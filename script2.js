@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-
+//сетка
 function drawGrid() {
   const gridColor = "rgba(0, 0, 0, 0.2)"; // Цвет сетки с прозрачностью 0.2
   const gridWidth = 1; // Ширина линий сетки
@@ -53,10 +53,11 @@ function Cloud(x,y,radius){
       ctx.closePath();
 }
 
+
 // автобан 
 function Highway(){
   ctx.fillStyle = "#808080";
-  ctx.fillRect(0, 0.4 * canvas.height, canvas.width, 0.4 * canvas.height);
+  ctx.fillRect(0, 0.4 * canvas.height, 1000000, 0.4 * canvas.height);
   console.log(canvas.height);
   // Разделительные полосы
   const lineWidth = 5;
@@ -65,50 +66,73 @@ function Highway(){
 
   ctx.fillStyle = lineColor;
 
-  const y1 = canvas.height - 0.6 * (1 / 3) * canvas.height;
-  const y2 = canvas.height - 0.6 * (2 / 3) * canvas.height;
+  const y1 = 0.6 ;
 
-  // Первая прерывистая полоса
+  // Первая разделительная полоса
   const x1 = 0;
 
-  // for (let i = x1; i < canvas.width; i += lineHeight * 2) {
-  //   ctx.fillRect(i, y2, lineHeight, lineWidth);
-  // }
-  const railHeight = 0.03 * canvas.height; // Высота отбойника
-  const railColor = "#aaaaaa"; // Цвет отбойника
-  const gradient = ctx.createLinearGradient(0, 0.37 * canvas.height, canvas.width, 0.37 * canvas.height + railHeight);
-  gradient.addColorStop(0, "#ff0000"); // Начальный цвет (красный)
-  gradient.addColorStop(1, "#ffffff"); // Конечный цвет (белый)
-  // верхний отбойник
-  ctx.fillStyle =gradient;
-  ctx.fillRect(0, 0.37 * canvas.height, canvas.width, railHeight);
+  for (let i = x1; i < 1000000; i += lineHeight * 2) {
+    ctx.fillRect(i, 0.59*canvas.height, lineHeight, lineWidth);
+  }
 
-  // Правый отбойник
-  ctx.fillStyle = railColor;
-  ctx.fillRect(0, 0.77 * canvas.height, canvas.width, railHeight);
-}
-function DrawGuardRails() {
+  // Отбойники
 const railHeight = 0.03 * canvas.height; // Высота отбойника
-const numberOfStripes = 20; // Количество полос
+const numberOfPlates = 10000; // Количество плит
 
-// Переменные с цветами
-const colors = ["#ffffff", "#ff0000"]; // Белый и красный цвета
-let currentColorIndex = 0; // Индекс текущего цвета
+for (let i = 0; i < numberOfPlates; i++) {
+  const plateWidth = 1000000 / numberOfPlates;
 
-for (let i = 0; i < numberOfStripes; i++) {
-  const stripeColor = colors[currentColorIndex]; // Выбираем текущий цвет
+  if (i % 2 === 0) {
+    ctx.fillStyle = "#FF0000"; // Красный цвет для четных плит
+  } else {
+    ctx.fillStyle = "#FFFFFF"; // Белый цвет для нечетных плит
+  }
 
-  // Рисуем отбойник
-  ctx.fillStyle = stripeColor;
-  ctx.fillRect(0, (0.37 + i * 0.04) * canvas.height, canvas.width, railHeight);
-
-  // Переключаемся на следующий цвет
-  currentColorIndex = (currentColorIndex + 1) % colors.length;
+  ctx.fillRect(i * plateWidth, 0.37 * canvas.height, plateWidth, railHeight);
+  ctx.fillRect(i * plateWidth, 0.77 * canvas.height, plateWidth, railHeight);
 }
 }
 
-Background();
-Cloud(100, 100, 50);
-Highway();
+
+let roadOffset = 0; // Смещение дороги по оси X
+let animationStartTime = null;
+const animationDuration = 150000; // 15 секунд в миллисекундах
+
+function animateRoad(timestamp) {
+  if (!animationStartTime) {
+    animationStartTime = timestamp;
+  }
+
+  // Определение времени, прошедшего с начала анимации
+  const elapsedTime = timestamp - animationStartTime;
+
+  // Изменение смещения дороги (движение слева направо)
+  roadOffset -= 1; // Изменение смещения, чтобы двигать дорогу влево
+
+  // Очистить холст
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  Background();
+  Cloud(100, 100, 50);
+
+  // Отрисовка дороги с новым смещением
+  ctx.save();
+  ctx.translate(roadOffset, 0); // Применение смещения
+  Highway();
+  ctx.restore();
+
+  drawGrid();
+
+  // Проверка времени анимации (15 секунд) и продолжение анимации
+  if (elapsedTime < animationDuration) {
+    requestAnimationFrame(animateRoad);
+  }
+}
+
+// Начать анимацию
+requestAnimationFrame(animateRoad);
+// Background();
+// Cloud(100, 100, 50);
+// Highway();
 // DrawGuardRails();
-drawGrid();
+// drawGrid();
