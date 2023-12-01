@@ -1,6 +1,9 @@
+
+
+import {Cloud, Cloud1, Cloud2, Cloud3, Clouds } from "./cloud.js";
+import { subaru } from "./subaru.js";
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 //сетка
@@ -39,26 +42,18 @@ function drawGrid() {
 //фон
 function Background() {
   ctx.fillStyle = "#8ac8ff";
-  ctx.fillRect(0, 0, canvas.width, 0.4*canvas.height);
+  ctx.fillRect(0, 0, 1000000, 0.4 * canvas.height);
   ctx.fillStyle = "#008000";
-  ctx.fillRect(0, 0.8 * canvas.height, canvas.width,canvas.height);
+  ctx.fillRect(0, 0.8 * canvas.height, 1000000, canvas.height);
 }
 
-// облако
-function Cloud(x,y,radius){
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, 2 * Math.PI);
-      ctx.fillStyle = "#ffffff";
-      ctx.fill();
-      ctx.closePath();
-}
 
 
 // автобан 
 function Highway(){
   ctx.fillStyle = "#808080";
   ctx.fillRect(0, 0.4 * canvas.height, 1000000, 0.4 * canvas.height);
-  console.log(canvas.height);
+  // console.log(canvas.height);
   // Разделительные полосы
   const lineWidth = 5;
   const lineHeight = 20;
@@ -95,10 +90,14 @@ for (let i = 0; i < numberOfPlates; i++) {
 
 
 let roadOffset = 0; // Смещение дороги по оси X
-let animationStartTime = null;
-const animationDuration = 150000; // 15 секунд в миллисекундах
 
+let cloudOffset = 0; // Смещение дороги по оси X
+let animationStartTime = null;
+const animationDuration = 20000; // 15 секунд в миллисекундах
+let wheelRotationAngle = 0;
+const wheelRotationSpeed = 0.03; // Скорость вращения колеса
 function animateRoad(timestamp) {
+  console.log(timestamp);
   if (!animationStartTime) {
     animationStartTime = timestamp;
   }
@@ -107,20 +106,24 @@ function animateRoad(timestamp) {
   const elapsedTime = timestamp - animationStartTime;
 
   // Изменение смещения дороги (движение слева направо)
-  roadOffset -= 1; // Изменение смещения, чтобы двигать дорогу влево
-
+  roadOffset -= 10; // Изменение смещения, чтобы двигать дорогу влево
+  cloudOffset -= 1.5; // Изменение смещения для облаков
   // Очистить холст
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  Background();
-  Cloud(100, 100, 50);
 
   // Отрисовка дороги с новым смещением
   ctx.save();
   ctx.translate(roadOffset, 0); // Применение смещения
+  Background();
   Highway();
-  ctx.restore();
 
+  ctx.restore();
+  ctx.save();
+  ctx.translate(cloudOffset, 0); // Применение смещения для облаков
+  Clouds(ctx);
+  ctx.restore();
+  wheelRotationAngle += wheelRotationSpeed;
+  subaru(ctx, canvas.height, canvas.width, wheelRotationAngle);
   drawGrid();
 
   // Проверка времени анимации (15 секунд) и продолжение анимации
@@ -132,7 +135,7 @@ function animateRoad(timestamp) {
 // Начать анимацию
 requestAnimationFrame(animateRoad);
 // Background();
-// Cloud(100, 100, 50);
 // Highway();
-// DrawGuardRails();
-// drawGrid();
+// Clouds(ctx);
+// subaru(ctx,canvas.height,canvas.width);
+drawGrid();
