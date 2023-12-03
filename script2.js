@@ -42,6 +42,7 @@ function drawGrid() {
 //фон
 function Background() {
   ctx.fillStyle = "#8ac8ff";
+  
   ctx.fillRect(0, 0, 1000000, 0.4 * canvas.height);
   ctx.fillStyle = "#008000";
   ctx.fillRect(0, 0.8 * canvas.height, 1000000, canvas.height);
@@ -107,7 +108,7 @@ function animateRoad(timestamp) {
 
   // Изменение смещения дороги (движение слева направо)
   roadOffset -= 10; // Изменение смещения, чтобы двигать дорогу влево
-  cloudOffset -= 1.5; // Изменение смещения для облаков
+  cloudOffset -= 0.5; // Изменение смещения для облаков
   // Очистить холст
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 

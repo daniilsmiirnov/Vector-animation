@@ -3,16 +3,61 @@ export function subaru(ctx, height, width, wheelRotationAngle) {
   let w = width;
   let h1 = h * 0.55;
   let w1 = w * 0.03;
+//корпус
+ctx.beginPath();
+ctx.moveTo(w1, h1);
+const radius = 10; // Радиус закругления
 
-  ctx.beginPath();
-  ctx.moveTo(w1, h1);
-  ctx.lineTo(w1 + w1 * 6, h1);
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 2;
-  ctx.stroke();
+// Горизонтальная линия
+ctx.lineTo(w1 + w1 * 6 - radius, h1);
+
+// Закругление на границе
+ctx.arcTo(w1 + w1 * 6, h1, w1 + w1 * 6, h1 - h1 * 0.1, radius);
+
+// Вертикальная линия справа
+ctx.lineTo(w1 + w1 * 6, h1 - h1 * 0.02); // Уменьшено расстояние
+
+// Верхнее выпуклое закругление
+ctx.arcTo(
+  w1 + w1 * 6 - radius,
+  h1 - h1 * 0.04,
+  w1 + w1 * 6 - radius,
+  h1 - h1 * 0.06, // Корректируем конечную точку для выпуклого закругления
+  radius
+);
+
+// Небольшая вертикальная линия вверх
+ctx.lineTo(w1 + w1 * 6 - radius, h1 - h1 * 0.06);
+
+ctx.lineTo(w1 + w1 * 4.5, h1 - h1 * 0.08);
+ctx.lineTo(w1 + w1 * 3.5, h1 - h1 * 0.14);
+ctx.lineTo(w1 + w1 * 1.5, h1 - h1 * 0.14);
+ctx.lineTo(w1 + w1 * 1, h1 - h1 * 0.08);
+ctx.lineTo(w1  , h1 - h1 * 0.08);
+ctx.lineTo(w1 , h1 );
+
+ctx.strokeStyle = "black";
+ctx.lineWidth = 2;
+ctx.stroke();
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   let r = h * 0.022;
   let rd = r - 3;
+
+
+
 
   // Нарисовать первое колесо
   ctx.save();
