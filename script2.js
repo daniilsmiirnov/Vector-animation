@@ -1,6 +1,7 @@
 
 
 import {Cloud, Cloud1, Cloud2, Cloud3, Clouds } from "./cloud.js";
+import { subaru2 } from "./subaru 2.js";
 import { subaru } from "./subaru.js";
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -125,6 +126,7 @@ function animateRoad(timestamp) {
   ctx.restore();
   wheelRotationAngle += wheelRotationSpeed;
   subaru(ctx, canvas.height, canvas.width, wheelRotationAngle);
+  subaru2(ctx, canvas.height, canvas.width, wheelRotationAngle);
   drawGrid();
 
   // Проверка времени анимации (15 секунд) и продолжение анимации
