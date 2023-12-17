@@ -8,6 +8,19 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 //сетка
+function drawText() {
+  ctx.font = "50px Arial";
+  ctx.fillStyle = "blue";
+  ctx.fillText("Blue win!!", canvas.width / 2 - 80, canvas.height / 2);
+}
+function endline() {
+  ctx.beginPath();
+  ctx.moveTo(canvas.width*4.8,canvas.height*0.8) ; // Начальная точка финишной черты (x, y)
+  ctx.lineTo(canvas.width*4.8, canvas.height*0.4); // Конечная точка финишной черты (x, y)
+  ctx.strokeStyle = "white"; // Цвет линии (белый в данном случае)
+  ctx.lineWidth = 5; // Ширина линии
+  ctx.stroke(); // Нарисовать линию
+}
 function drawGrid() {
   const gridColor = "rgba(0, 0, 0, 0.2)"; // Цвет сетки с прозрачностью 0.2
   const gridWidth = 1; // Ширина линий сетки
@@ -49,7 +62,33 @@ function Background() {
   ctx.fillRect(0, 0.8 * canvas.height, 1000000, canvas.height);
 }
 
+function drawTrafficLight(redLightOn) {
+  const trafficLightX = canvas.width * 0.5; 
+  const trafficLightY = canvas.height-canvas.height*0.15; 
+  const trafficLightWidth = canvas.width*0.03; 
+  const trafficLightHeight = canvas.height*0.14; 
 
+  ctx.fillStyle = "black";
+  ctx.fillRect(trafficLightX, trafficLightY, trafficLightWidth, trafficLightHeight); 
+
+  const redLightRadius = canvas.width*0.007; 
+  const lightSpacing = 20; 
+
+  ctx.fillStyle = redLightOn ? "red" : "#00e600"; // Определяем цвет в зависимости от флага
+
+  // Рисуем красные или зеленые света светофора
+  ctx.beginPath();
+  ctx.arc(trafficLightX + trafficLightWidth / 2, trafficLightY + lightSpacing, redLightRadius, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(trafficLightX + trafficLightWidth / 2, trafficLightY + trafficLightHeight / 2, redLightRadius, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(trafficLightX + trafficLightWidth / 2, trafficLightY + trafficLightHeight - lightSpacing, redLightRadius, 0, Math.PI * 2);
+  ctx.fill();
+}
 
 // автобан 
 function Highway(){
@@ -90,14 +129,24 @@ for (let i = 0; i < numberOfPlates; i++) {
 }
 }
 
-
+let w =canvas.width;
+let h = canvas.height;
 let roadOffset = 0; // Смещение дороги по оси X
 
 let cloudOffset = 0; // Смещение дороги по оси X
 let animationStartTime = null;
-const animationDuration = 20000; // 15 секунд в миллисекундах
-let wheelRotationAngle = 0;
-const wheelRotationSpeed = 0.03; // Скорость вращения колеса
+const animationDuration = 20000; 
+let wheelRotationAngle1 = 0;
+let wheelRotationSpeed1 = 0.03;
+let wheelRotationAngle2 = 0;
+let wheelRotationSpeed2 = 0.03; // Скорость вращения колеса
+let redLightOn = true; // Флаг, указывающий, включен ли красный свет светофора
+let pinkCarOffset = 0; // Смещение розовой машины
+let BlueCarOffset = 0; 
+let carX = 50;
+let swet = 50; // Начальная координата X машины
+let line = 600;
+let carY = canvas.height * 0.6; // Начальная координата Y машины
 function animateRoad(timestamp) {
   console.log(timestamp);
   if (!animationStartTime) {
@@ -106,39 +155,101 @@ function animateRoad(timestamp) {
 
   // Определение времени, прошедшего с начала анимации
   const elapsedTime = timestamp - animationStartTime;
+  if (elapsedTime < 5000) {
+    wheelRotationSpeed1 = 0;
+    wheelRotationSpeed2 = 0;
+    // Первые 5 секунд поочередно включаем и выключаем красный свет
+    if (elapsedTime % 1000 < 500) {
+      redLightOn = true;
+    } else {
+      redLightOn = false;
+    }
+  } else {
+    // После первых 5 секунд все три круга становятся зелеными
+    redLightOn = false;
+  }
+  if (elapsedTime >= 5000 && elapsedTime<=10000 ) {
+    wheelRotationSpeed1 = 0.03;
+    pinkCarOffset += 1;
+    BlueCarOffset += 0.3;
+    wheelRotationSpeed2 = 100;
+    carX -= 5;
+    swet+=100000
+    roadOffset -= 10;
+    cloudOffset -= 0.5;
+  }// Очистить холст
+  if (elapsedTime > 10000 && elapsedTime <= 16000) {
+    wheelRotationSpeed1 = 0.1;
+    pinkCarOffset += 1;
+    BlueCarOffset += 2;
+    wheelRotationSpeed2 = 100;
+    carX -= 5;
+    drawText();
+    roadOffset -= 10;
+    cloudOffset -= 0.5;
+  }
+  if (elapsedTime > 16000 && elapsedTime <= 18000) {
+      wheelRotationSpeed1 = 0.1;
+      pinkCarOffset += 3;
+      BlueCarOffset += 2;
+      wheelRotationSpeed2 = 100;
+      carX -= 5;
+      roadOffset -= 10;
+      cloudOffset -= 0.5;
+    }
 
-  // Изменение смещения дороги (движение слева направо)
-  roadOffset -= 10; // Изменение смещения, чтобы двигать дорогу влево
-  cloudOffset -= 0.5; // Изменение смещения для облаков
-  // Очистить холст
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Отрисовка дороги с новым смещением
+  // Отрисовка дороги с новым смещением и светофором
   ctx.save();
-  ctx.translate(roadOffset, 0); // Применение смещения
+  ctx.translate(roadOffset, 0);
   Background();
   Highway();
-
   ctx.restore();
+
   ctx.save();
-  ctx.translate(cloudOffset, 0); // Применение смещения для облаков
+  ctx.translate(cloudOffset, 0);
   Clouds(ctx);
   ctx.restore();
-  wheelRotationAngle += wheelRotationSpeed;
-  subaru(ctx, canvas.height, canvas.width, wheelRotationAngle);
-  subaru2(ctx, canvas.height, canvas.width, wheelRotationAngle);
-  drawGrid();
+  ctx.save();
+  ctx.translate(roadOffset, 0);
+  endline(); // Передаем флаг для отрисовки красного или зеленого света на светофоре
+  ctx.restore();
+  wheelRotationAngle1 += 2*wheelRotationSpeed1;
+  wheelRotationAngle2 += wheelRotationSpeed2; 
+  ctx.save();
+  ctx.translate(pinkCarOffset, 0);
+  subaru(ctx, canvas.height, canvas.width, wheelRotationAngle1); 
+   // ctx.translate(pinkCarOffset,0)
+  ctx.restore()
+  ctx.save();
+  ctx.translate(BlueCarOffset, 0);
+  subaru2(ctx, canvas.height, canvas.width, wheelRotationAngle2);
+  ctx.restore();
+  // drawGrid();
+  ctx.save();
+  ctx.translate(swet, 0);
+  drawTrafficLight(redLightOn); // Передаем флаг для отрисовки красного или зеленого света на светофоре
+  ctx.restore();
+  // endline(); 
+    if (elapsedTime > 18000) {
+    wheelRotationSpeed1 = 0.1;
+    pinkCarOffset += 10;
+    BlueCarOffset += 10;
+    wheelRotationSpeed2 = 100;
+    carX -= 5;
+    roadOffset -= 10;
+    cloudOffset -= 0.5;
+    drawText();
+  }
 
-  // Проверка времени анимации (15 секунд) и продолжение анимации
   if (elapsedTime < animationDuration) {
     requestAnimationFrame(animateRoad);
   }
+
 }
 
 // Начать анимацию
 requestAnimationFrame(animateRoad);
-// Background();
-// Highway();
-// Clouds(ctx);
-// subaru(ctx,canvas.height,canvas.width);
-drawGrid();
+
+// drawGrid();

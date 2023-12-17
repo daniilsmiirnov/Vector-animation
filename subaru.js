@@ -1,8 +1,13 @@
-export function subaru(ctx, height, width, wheelRotationAngle) {
+export function subaru(ctx, height, width, wheelRotationAngle,carX, carY) {
   let h = height;
   let w = width;
   let h1 = h * 0.7;
+  // let h1 = 855;    
   let w1 = w * 0.03;
+  // let w1 = 65;
+  // console.log(h1,w1)
+  ctx.save(); // Сохраняем текущее состояние контекста
+  // 
   //корпус
   ctx.beginPath();
   ctx.moveTo(w1, h1);
@@ -163,16 +168,16 @@ export function subaru(ctx, height, width, wheelRotationAngle) {
   ctx.beginPath();
   ctx.moveTo(w1 + w1 * 4.5, h1 - h1 * 0.07);
   ctx.lineTo(w1 + w1 * 3.5, h1 - h1 * 0.12);
-  ctx.lineTo(w1 , h1 - h1 * 0.12);
-  ctx.lineTo(w1 , h1 - h1 * 0.07);
+  ctx.lineTo(w1, h1 - h1 * 0.12);
+  ctx.lineTo(w1, h1 - h1 * 0.07);
   ctx.closePath();
   ctx.fillStyle = "#333333";
   ctx.fill();
   ctx.beginPath();
-  ctx.moveTo(w1 + w1 * 2.8, h1-h1 *0.12);
-  ctx.lineTo(w1 + w1 * 2.9, h1 );
-  ctx.lineTo(w1 + w1 * 3, h1 );
-  ctx.lineTo(w1 + w1 * 2.9, h1-h1 *0.12);
+  ctx.moveTo(w1 + w1 * 2.8, h1 - h1 * 0.12);
+  ctx.lineTo(w1 + w1 * 2.9, h1);
+  ctx.lineTo(w1 + w1 * 3, h1);
+  ctx.lineTo(w1 + w1 * 2.9, h1 - h1 * 0.12);
   ctx.closePath();
   ctx.fillStyle = "#ff4252";
   ctx.fill();
@@ -185,27 +190,29 @@ export function subaru(ctx, height, width, wheelRotationAngle) {
   ctx.fillStyle = "#ff4252";
   ctx.fill();
   ctx.beginPath();
-  ctx.moveTo(w1 + w1 * 2.8, h1-h1 *0.12);
+  ctx.moveTo(w1 + w1 * 2.8, h1 - h1 * 0.12);
   ctx.lineTo(w1 + w1 * 2.9, h1);
 
-  ctx.moveTo(w1 + w1 * 2.9, h1-h1 *0.12);
+  ctx.moveTo(w1 + w1 * 2.9, h1 - h1 * 0.12);
   ctx.lineTo(w1 + w1 * 3, h1);
 
   ctx.moveTo(w1 + w1 * 1.1, h1 - h1 * 0.07);
   ctx.lineTo(w1 + w1 * 1.22, h1);
 
   ctx.moveTo(w1 + w1 * 4.5, h1 - h1 * 0.07);
-  ctx.lineTo(w1 + w1 * 4.5, h1-h1*0.02);
+  ctx.lineTo(w1 + w1 * 4.5, h1 - h1 * 0.02);
   ctx.strokeStyle = "#333333";
   ctx.lineWidth = 2;
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.moveTo(w1 , h1-h1 *0.12);
-  ctx.lineTo(w1 + w1 * 3.5, h1-h1 *0.12);
+  ctx.moveTo(w1, h1 - h1 * 0.12);
+  ctx.lineTo(w1 + w1 * 3.5, h1 - h1 * 0.12);
   ctx.strokeStyle = "#ff4252";
   ctx.lineWidth = 4;
   ctx.stroke();
+  ctx.translate(carX, carY);
+  ctx.restore(); // Восстанавливаем сохраненное состояние контекста
   // ctx.beginPath();
   // ctx.ellipse(w1 + w1 * 1.3, h1 - h1 * 0.06, w1*0.14, w1*0.06, 0, 0, Math.PI * 2);
   // ctx.ellipse(w1 + w1 * 3, h1 - h1 * 0.06, w1 * 0.14, w1 * 0.06, 0, 0, Math.PI * 2);
