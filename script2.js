@@ -7,7 +7,7 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-//сетка
+
 function drawText() {
   ctx.font = "50px Arial";
   ctx.fillStyle = "blue";
@@ -15,15 +15,15 @@ function drawText() {
 }
 function endline() {
   ctx.beginPath();
-  ctx.moveTo(canvas.width*4.8,canvas.height*0.8) ; // Начальная точка финишной черты (x, y)
-  ctx.lineTo(canvas.width*4.8, canvas.height*0.4); // Конечная точка финишной черты (x, y)
-  ctx.strokeStyle = "white"; // Цвет линии (белый в данном случае)
-  ctx.lineWidth = 5; // Ширина линии
-  ctx.stroke(); // Нарисовать линию
+  ctx.moveTo(canvas.width*4.8,canvas.height*0.8) ; 
+  ctx.lineTo(canvas.width*4.8, canvas.height*0.4); 
+  ctx.strokeStyle = "white"; 
+  ctx.lineWidth = 5;
+  ctx.stroke();
 }
 function drawGrid() {
-  const gridColor = "rgba(0, 0, 0, 0.2)"; // Цвет сетки с прозрачностью 0.2
-  const gridWidth = 1; // Ширина линий сетки
+  const gridColor = "rgba(0, 0, 0, 0.2)";
+  const gridWidth = 1;
 
   ctx.save();
 
@@ -76,7 +76,7 @@ function drawTrafficLight(redLightOn) {
 
   ctx.fillStyle = redLightOn ? "red" : "#00e600"; // Определяем цвет в зависимости от флага
 
-  // Рисуем красные или зеленые света светофора
+
   ctx.beginPath();
   ctx.arc(trafficLightX + trafficLightWidth / 2, trafficLightY + lightSpacing, redLightRadius, 0, Math.PI * 2);
   ctx.fill();
@@ -131,9 +131,9 @@ for (let i = 0; i < numberOfPlates; i++) {
 
 let w =canvas.width;
 let h = canvas.height;
-let roadOffset = 0; // Смещение дороги по оси X
+let roadOffset = 0; 
 
-let cloudOffset = 0; // Смещение дороги по оси X
+let cloudOffset = 0; 
 let animationStartTime = null;
 const animationDuration = 20000; 
 let wheelRotationAngle1 = 0;
@@ -144,9 +144,9 @@ let redLightOn = true; // Флаг, указывающий, включен ли 
 let pinkCarOffset = 0; // Смещение розовой машины
 let BlueCarOffset = 0; 
 let carX = 50;
-let swet = 50; // Начальная координата X машины
+let swet = 50; 
 let line = 600;
-let carY = canvas.height * 0.6; // Начальная координата Y машины
+let carY = canvas.height * 0.6;
 function animateRoad(timestamp) {
   console.log(timestamp);
   if (!animationStartTime) {
@@ -177,7 +177,7 @@ function animateRoad(timestamp) {
     swet+=100000
     roadOffset -= 10;
     cloudOffset -= 0.5;
-  }// Очистить холст
+  }
   if (elapsedTime > 10000 && elapsedTime <= 16000) {
     wheelRotationSpeed1 = 0.1;
     pinkCarOffset += 1;
@@ -200,7 +200,7 @@ function animateRoad(timestamp) {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Отрисовка дороги с новым смещением и светофором
+
   ctx.save();
   ctx.translate(roadOffset, 0);
   Background();
@@ -213,7 +213,7 @@ function animateRoad(timestamp) {
   ctx.restore();
   ctx.save();
   ctx.translate(roadOffset, 0);
-  endline(); // Передаем флаг для отрисовки красного или зеленого света на светофоре
+  endline(); 
   ctx.restore();
   wheelRotationAngle1 += 2*wheelRotationSpeed1;
   wheelRotationAngle2 += wheelRotationSpeed2; 
@@ -229,7 +229,7 @@ function animateRoad(timestamp) {
   // drawGrid();
   ctx.save();
   ctx.translate(swet, 0);
-  drawTrafficLight(redLightOn); // Передаем флаг для отрисовки красного или зеленого света на светофоре
+  drawTrafficLight(redLightOn); 
   ctx.restore();
   // endline(); 
     if (elapsedTime > 18000) {

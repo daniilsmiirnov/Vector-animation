@@ -6,27 +6,21 @@ export function subaru2(ctx, height, width, wheelRotationAngle) {
   //корпус
   ctx.beginPath();
   ctx.moveTo(w1, h1);
-  const radius = 10; // Радиус закругления
-
-  // Горизонтальная линия
+  const radius = 10; 
   ctx.lineTo(w1 + w1 * 6 - radius, h1);
 
-  // Закругление на границе
   ctx.arcTo(w1 + w1 * 6, h1, w1 + w1 * 6, h1 - h1 * 0.1, radius);
 
-  // Вертикальная линия справа
-  ctx.lineTo(w1 + w1 * 6, h1 - h1 * 0.02); // Уменьшено расстояние
+  ctx.lineTo(w1 + w1 * 6, h1 - h1 * 0.02); 
 
-  // Верхнее выпуклое закругление
   ctx.arcTo(
     w1 + w1 * 6 - radius,
     h1 - h1 * 0.04,
     w1 + w1 * 6 - radius,
-    h1 - h1 * 0.06, // Корректируем конечную точку для выпуклого закругления
+    h1 - h1 * 0.06, 
     radius
   );
 
-  // Небольшая вертикальная линия вверх
   ctx.lineTo(w1 + w1 * 6 - radius, h1 - h1 * 0.06);
   ctx.lineTo(w1 + w1 * 4.5, h1 - h1 * 0.08);
   ctx.lineTo(w1 + w1 * 3.5, h1 - h1 * 0.14);
@@ -35,8 +29,8 @@ export function subaru2(ctx, height, width, wheelRotationAngle) {
   ctx.lineTo(w1, h1 - h1 * 0.08);
   ctx.lineTo(w1, h1);
   ctx.closePath();
-  ctx.fillStyle = "#000066"; // Выбор цвета для заливки (синий)
-  ctx.fill(); // Заливка фигуры
+  ctx.fillStyle = "#000066"; 
+  ctx.fill(); 
   ctx.strokeStyle = "black";
   ctx.lineWidth = 2;
   ctx.stroke();
@@ -44,7 +38,7 @@ export function subaru2(ctx, height, width, wheelRotationAngle) {
   let r = h * 0.022;
   let rd = r - 3;
 
-  // Нарисовать первое колесо
+  // первое колесо
   ctx.save();
   ctx.translate(w1 + w1 * 1, h1);
   ctx.rotate(wheelRotationAngle);
@@ -83,12 +77,11 @@ export function subaru2(ctx, height, width, wheelRotationAngle) {
   ctx.lineWidth = 1;
   ctx.stroke();
 
-  ctx.restore(); // Восстанавливаем сохраненное состояние контекста для первого колеса
-
-  // Нарисовать второе колесо
+  ctx.restore(); 
+  // второе колесо
   ctx.save();
   ctx.translate(w1 + w1 * 4.9, h1);
-  ctx.rotate(wheelRotationAngle); // Применяем тот же угол вращения
+  ctx.rotate(wheelRotationAngle); 
   ctx.translate(-(w1 + w1 * 4.9), -h1);
 
   ctx.beginPath();
@@ -122,7 +115,7 @@ export function subaru2(ctx, height, width, wheelRotationAngle) {
   ctx.lineWidth = 1;
   ctx.stroke();
 
-  ctx.restore(); // Восстанавливаем сохраненное состояние контекста для второго колеса
+  ctx.restore(); 
 
   ctx.beginPath();
   ctx.moveTo(w1, h1 - h1 * 0.08); // начальная точка левого фара
